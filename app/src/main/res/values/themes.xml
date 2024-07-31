@@ -5,6 +5,7 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
+        <item name="android:windowActivityTransitions">true</item>
     </style>
 
     <style name="Theme.S_crafter" parent="Base.Theme.S_crafter" />

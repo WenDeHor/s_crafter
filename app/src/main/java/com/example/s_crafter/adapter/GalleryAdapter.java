@@ -1,7 +1,10 @@
 package com.example.s_crafter.adapter;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,10 +48,18 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
                 Intent intent = new Intent(context, StoryPage.class);
                 intent.putExtra("storyPageImage", imageId);
                 intent.putExtra("storyPageText", text);
-                context.startActivity(intent);
+                context.startActivity(intent, imageTransitionMaker(holder).toBundle());
             }
         });
     }
+
+    private ActivityOptions imageTransitionMaker(@NonNull GalleryViewHolder holder) {
+        return ActivityOptions.makeSceneTransitionAnimation(
+                (Activity) context,
+                new Pair<View, String>(holder.imageView, "imageTransition")
+        );
+    }
+
 
     @Override
     public int getItemCount() {
