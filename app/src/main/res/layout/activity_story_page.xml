@@ -64,7 +64,7 @@
                 android:id="@+id/imageStoryPage"
                 android:layout_width="wrap_content"
                 android:layout_height="500dp"
-                android:layout_marginStart="16dp"
+
                 android:contentDescription="@string/app_name"
                 android:transitionName="imageTransition"
                 app:layout_constraintStart_toStartOf="parent"
@@ -73,9 +73,13 @@
 
             <TextView
                 android:id="@+id/textStoryPage"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/some_text"
+                android:textColor="#1B0101"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/button2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

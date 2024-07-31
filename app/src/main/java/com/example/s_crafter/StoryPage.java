@@ -1,5 +1,6 @@
 package com.example.s_crafter;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +36,7 @@ public class StoryPage extends AppCompatActivity {
     }
 
     private void buttonRevert(Button backButton) {
+        backButton.setBackgroundColor(Color.parseColor("#ADD8E6"));
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
