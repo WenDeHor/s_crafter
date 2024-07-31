@@ -19,10 +19,17 @@ public class NavigatorAdapter extends RecyclerView.Adapter<NavigatorAdapter.Navi
 
     Context context;
     List<Navigation> navigations;
+    private OnItemClickListener onItemClickListener;
 
     public NavigatorAdapter(Context context, List<Navigation> navigations) {
         this.context = context;
         this.navigations = navigations;
+    }
+
+    public NavigatorAdapter(Context context, List<Navigation> navigations, OnItemClickListener onItemClickListener) {
+        this.context = context;
+        this.navigations = navigations;
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -35,6 +42,9 @@ public class NavigatorAdapter extends RecyclerView.Adapter<NavigatorAdapter.Navi
     @Override
     public void onBindViewHolder(@NonNull NavigatorViewHolder holder, int position) {
         holder.navigationTitle.setText(navigations.get(position).getTitle());
+        holder.itemView.setOnClickListener(v -> {
+            onItemClickListener.onItemClick(position);
+        });
     }
 
     @Override
@@ -50,4 +60,9 @@ public class NavigatorAdapter extends RecyclerView.Adapter<NavigatorAdapter.Navi
             navigationTitle = itemView.findViewById(R.id.navigationTitleItem);
         }
     }
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
 }
