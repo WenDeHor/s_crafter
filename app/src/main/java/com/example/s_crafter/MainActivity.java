@@ -1,10 +1,10 @@
 package com.example.s_crafter;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,22 +20,26 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView navigatorRecycler, galleryRecycler;
     NavigatorAdapter navigatorAdapter;
     GalleryAdapter galleryAdapter;
+    List<Navigation> navigationList = new ArrayList<>();
+    List<Gallery> galleryList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        List<Navigation> navigationList = new ArrayList<>();
+        testDb();
+    }
+
+    private void testDb() {
         for (int i = 0; i < 20; i++) {
-            navigationList.add(new Navigation(i+1, String.valueOf(i+1)));
+            navigationList.add(new Navigation(i + 1, String.valueOf(i + 1)));
         }
         setNavigatorRecycler(navigationList);
 
-        List<Gallery> galleryList = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
-            galleryList.add(new Gallery(i+1, "my_image", "title"));
-           }
+            galleryList.add(new Gallery(i + 1, "my_image", "title"));
+        }
         setGalleryRecycler(galleryList);
     }
 

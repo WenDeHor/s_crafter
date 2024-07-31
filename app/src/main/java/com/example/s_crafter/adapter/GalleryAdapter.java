@@ -1,6 +1,7 @@
 package com.example.s_crafter.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.s_crafter.R;
+import com.example.s_crafter.StoryPage;
 import com.example.s_crafter.model.Gallery;
 
 import java.util.List;
@@ -34,8 +36,16 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
 
     @Override
     public void onBindViewHolder(@NonNull GalleryViewHolder holder, int position) {
-        int imageId=context.getResources().getIdentifier(galleries.get(position).getImg(), "drawable", context.getPackageName());
+        int imageId = context.getResources().getIdentifier(galleries.get(position).getImg(), "drawable", context.getPackageName());
         holder.galleryImg.setImageResource(imageId);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, StoryPage.class);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -45,6 +55,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
 
     public static final class GalleryViewHolder extends RecyclerView.ViewHolder {
         ImageView galleryImg;
+
         public GalleryViewHolder(@NonNull View itemView) {
             super(itemView);
             galleryImg = itemView.findViewById(R.id.galleryImg);
