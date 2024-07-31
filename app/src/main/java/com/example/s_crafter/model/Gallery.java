@@ -2,12 +2,21 @@ package com.example.s_crafter.model;
 
 public class Gallery {
     int id;
-    String img, title;
+    String img, title, text;
 
-    public Gallery(int id, String img, String title) {
+    public Gallery(int id, String img, String title, String text) {
         this.id = id;
         this.img = img;
         this.title = title;
+        this.text = text;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     public int getId() {

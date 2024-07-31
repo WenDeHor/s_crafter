@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,12 +36,15 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
     @Override
     public void onBindViewHolder(@NonNull GalleryViewHolder holder, int position) {
         int imageId = context.getResources().getIdentifier(galleries.get(position).getImg(), "drawable", context.getPackageName());
-        holder.galleryImg.setImageResource(imageId);
+        holder.imageView.setImageResource(imageId);
+        String text = galleries.get(position).getText();
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, StoryPage.class);
+                intent.putExtra("storyPageImage", imageId);
+                intent.putExtra("storyPageText", text);
                 context.startActivity(intent);
             }
         });
@@ -54,11 +56,11 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
     }
 
     public static final class GalleryViewHolder extends RecyclerView.ViewHolder {
-        ImageView galleryImg;
+        ImageView imageView;
 
         public GalleryViewHolder(@NonNull View itemView) {
             super(itemView);
-            galleryImg = itemView.findViewById(R.id.galleryImg);
+            imageView = itemView.findViewById(R.id.galleryImg);
         }
     }
 }

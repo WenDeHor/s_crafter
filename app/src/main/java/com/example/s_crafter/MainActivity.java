@@ -23,6 +23,9 @@ public class MainActivity extends AppCompatActivity {
     List<Navigation> navigationList = new ArrayList<>();
     List<Gallery> galleryList = new ArrayList<>();
 
+
+    String textTest = "Інколи в житі кожної людини відбуваються події про які вона могла лише мріяти. Життєва стіна була непробивною і тому кожен усвідомивши це продовжував жити сірими буднями з дня в день займаючись тими самими справами, не змінюючи свого звичного способу життя. Кожна подія була передбачуваною і навіть подарунок, що містив в собі фактор несподіваності був очікуваним і не містив в собі нічого надзвичайного";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         setNavigatorRecycler(navigationList);
 
         for (int i = 0; i < 20; i++) {
-            galleryList.add(new Gallery(i + 1, "my_image", "title"));
+            galleryList.add(new Gallery(i + 1, "my_image", "title", i + 1 + "__" + textTest));
         }
         setGalleryRecycler(galleryList);
     }
