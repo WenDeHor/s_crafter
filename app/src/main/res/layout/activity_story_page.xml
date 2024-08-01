@@ -56,8 +56,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:gravity="center"
+            android:orientation="vertical"
             android:padding="16dp">
 
             <ImageView
@@ -73,10 +73,10 @@
 
             <TextView
                 android:id="@+id/textStoryPage"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
                 android:text="@string/some_text"
                 android:textColor="#1B0101"
                 android:textSize="16sp"
@@ -85,17 +85,36 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
-            <Button
-                android:id="@+id/buttonRevert"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/story_page_button"
-                android:theme="@style/ButtonStyle"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="16dp">
 
-                app:layout_constraintStart_toStartOf="parent" />
+                <Button
+                    android:id="@+id/buttonRevert"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/story_page_button"
+                    android:theme="@style/ButtonStyle"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
+                <Button
+                    android:id="@+id/buttonToFlip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="To Flip" />
+
+                <Button
+                    android:id="@+id/buttonToEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Edit" />
+
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
