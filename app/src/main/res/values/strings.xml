@@ -5,4 +5,10 @@
     <string name="crafter_name">Crafter</string>
     <string name="some_text">Інколи в житі кожної людини відбуваються події про які вона могла лише мріяти. Життєва стіна була непробивною і тому кожен усвідомивши це продовжував жити сірими буднями з дня в день займаючись тими самими справами, не змінюючи свого звичного способу життя. Кожна подія була передбачуваною і навіть подарунок, що містив в собі фактор несподіваності був очікуваним і не містив в собі нічого надзвичайного.</string>
     <string name="story_page_button">Revert</string>
+    <string name="add_image">Add Image</string>
+    <string name="add_text">Add Text</string>
+    <string name="save">Save</string>
+    <string name="hint_text">Введіть текст тут</string>
+    <string name="revert">Revert</string>
+    <string name="add">+</string>
 </resources>

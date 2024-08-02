@@ -1,7 +1,13 @@
 package com.example.s_crafter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,17 +42,31 @@ public class MainActivity extends AppCompatActivity {
 
         galleryRecycler = findViewById(R.id.galleryRecycler);
         navigatorRecycler = findViewById(R.id.navigatorRecycler);
+        Button buttonAdd = findViewById(R.id.buttonAdd);
+        addStoryByButton(buttonAdd);
 
         testDb(galleryRecycler, navigatorRecycler);
 
-        NavigatorAdapter searcher = new NavigatorAdapter(this,navigationList, new NavigatorAdapter.OnItemClickListener() {
+        NavigatorAdapter searcher = new NavigatorAdapter(this, navigationList, new NavigatorAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                smoothScrollToCenter(galleryRecycler,position);
+                smoothScrollToCenter(galleryRecycler, position);
             }
         });
         navigatorRecycler.setAdapter(searcher);
 
+    }
+
+    private void addStoryByButton(Button buttonAdd) {
+        buttonAdd.setBackgroundColor(Color.parseColor("#ADD8E6"));
+        buttonAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+                Intent intent = new Intent(MainActivity.this, AddStory.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void testDb(RecyclerView galleryRecycler, RecyclerView navigatorRecycler) {

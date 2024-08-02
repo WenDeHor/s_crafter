@@ -3,4 +3,10 @@
         <item name="android:background">#FF4081</item>
         <item name="android:textColor">#FFFFFF</item>
     </style>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Інші налаштування стилю -->
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
 </resources>
+
+
