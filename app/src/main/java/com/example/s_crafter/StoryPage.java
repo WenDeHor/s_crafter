@@ -1,8 +1,10 @@
 package com.example.s_crafter;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,6 +35,9 @@ public class StoryPage extends AppCompatActivity {
 
         Button backButton = findViewById(R.id.buttonRevert);
         buttonRevert(backButton);
+
+        Button buttonFlip = findViewById(R.id.buttonToFlip);
+        toFlipCardActivityByButton(buttonFlip);
     }
 
     private void buttonRevert(Button backButton) {
@@ -41,6 +46,17 @@ public class StoryPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish(); // Повертає на попереднє активіті
+            }
+        });
+    }
+
+    private void toFlipCardActivityByButton(Button buttonFlip) {
+        buttonFlip.setBackgroundColor(Color.parseColor("#ADD8E6"));
+        buttonFlip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(StoryPage.this, FlipCard.class);
+                startActivity(intent);
             }
         });
     }
