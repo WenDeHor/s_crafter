@@ -72,7 +72,7 @@
                 app:srcCompat="@drawable/my_image" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/buttonSelectImage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/add_image" />
