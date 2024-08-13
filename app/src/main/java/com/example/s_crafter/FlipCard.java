@@ -1,29 +1,29 @@
 package com.example.s_crafter;
 
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.annotation.SuppressLint;
+import android.graphics.Color;
+import android.graphics.text.LineBreaker;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewPropertyAnimator;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.cardview.widget.CardView;
 
 public class FlipCard extends AppCompatActivity {
 
+
     private FrameLayout cardContainer;
+    private CardView cardView;
     private View cardFront;
     private View cardBack;
     private boolean isFrontVisible = true;
@@ -39,14 +39,18 @@ public class FlipCard extends AppCompatActivity {
 //            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
 //            return insets;
 //        });
-
+        View contBg = findViewById(R.id.bg_flip_card);
+        contBg.setBackgroundColor(Color.parseColor(getString(R.string.appColor)));
         cardContainer = findViewById(R.id.card_container);
+
         cardFront = getLayoutInflater().inflate(R.layout.card_front, null);
         cardBack = getLayoutInflater().inflate(R.layout.card_back, null);
+        cardBack.setBackgroundColor(Color.parseColor(getString(R.string.cardBgTextColor)));
+        setTextOptions();
 
         // Завантаження зображень для передньої і задньої сторін картки з ресурсів
         setImage(cardFront, R.id.image_front, R.drawable.my_image); // Замість "my_image" вкажіть ім'я вашого зображення
-        setImage(cardBack, R.id.image_back, R.drawable.my_image); // Замість "my_image" вкажіть ім'я вашого зображення
+//        setImage(cardBack, R.id.text_back, R.drawable.my_image); // Замість "my_image" вкажіть ім'я вашого зображення
 
         // Налаштування розміру картки
         adjustCardSize();
@@ -61,6 +65,16 @@ public class FlipCard extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void setTextOptions(){
+        TextView text = cardBack.findViewById(R.id.text_back);
+        text.setTextColor(Color.parseColor(getString(R.string.cardTextColor)));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            text.setJustificationMode(LineBreaker.JUSTIFICATION_MODE_INTER_WORD);
+        } else {
+            text.setGravity(Gravity.START);
+        }
     }
 
     private void setImage(View view, int imageViewId, int imageResource) {
