@@ -97,7 +97,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
             <Button
-                android:id="@+id/buttonRevert"
+                android:id="@+id/buttonSaveStory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/save"
