@@ -1,11 +1,12 @@
 package com.example.s_crafter;
 
-import android.annotation.SuppressLint;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.text.LineBreaker;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
@@ -21,7 +22,7 @@ import androidx.cardview.widget.CardView;
 
 public class FlipCard extends AppCompatActivity {
 
-
+    private Context context;
     private FrameLayout cardContainer;
     private CardView cardView;
     private View cardFront;
@@ -46,13 +47,19 @@ public class FlipCard extends AppCompatActivity {
         cardFront = getLayoutInflater().inflate(R.layout.card_front, null);
         cardBack = getLayoutInflater().inflate(R.layout.card_back, null);
         cardBack.setBackgroundColor(Color.parseColor(getString(R.string.cardBgTextColor)));
-        setTextOptions();
 
-        // Завантаження зображень для передньої і задньої сторін картки з ресурсів
-        setImage(cardFront, R.id.image_front, R.drawable.my_image); // Замість "my_image" вкажіть ім'я вашого зображення
-//        setImage(cardBack, R.id.text_back, R.drawable.my_image); // Замість "my_image" вкажіть ім'я вашого зображення
+        ImageView imageView = cardFront.findViewById(R.id.image_front);
+        String storyPageImagePath = getIntent().getStringExtra("storyPageImagePathFlipCard");
+        System.out.println(storyPageImagePath+"+++++++++++++++Path");
+        if (storyPageImagePath != null) {
+            Bitmap bitmap = BitmapFactory.decodeFile(storyPageImagePath);
+            imageView.setImageBitmap(bitmap);
+        } else {
+            imageView.setImageResource(R.drawable.my_image);
+        }
+        String storyPageText = getIntent().getStringExtra("storyPageTextFlipCard");
+        setTextOnCardBack(storyPageText);
 
-        // Налаштування розміру картки
         adjustCardSize();
 
         cardContainer.addView(cardFront);
@@ -67,13 +74,14 @@ public class FlipCard extends AppCompatActivity {
         });
     }
 
-    private void setTextOptions(){
-        TextView text = cardBack.findViewById(R.id.text_back);
-        text.setTextColor(Color.parseColor(getString(R.string.cardTextColor)));
+    private void setTextOnCardBack(String text){
+        TextView textView = cardBack.findViewById(R.id.text_back);
+        textView.setTextColor(Color.parseColor(getString(R.string.cardTextColor)));
+        textView.setText(text);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            text.setJustificationMode(LineBreaker.JUSTIFICATION_MODE_INTER_WORD);
+            textView.setJustificationMode(LineBreaker.JUSTIFICATION_MODE_INTER_WORD);
         } else {
-            text.setGravity(Gravity.START);
+            textView.setGravity(Gravity.START);
         }
     }
 
@@ -87,7 +95,6 @@ public class FlipCard extends AppCompatActivity {
         int width = displayMetrics.widthPixels;
         int height = displayMetrics.heightPixels;
 
-        // Встановити розмір картки на 75% від ширини і висоти екрану
         int cardWidth = (int) (width * 0.75);
         int cardHeight = (int) (height * 0.75);
 

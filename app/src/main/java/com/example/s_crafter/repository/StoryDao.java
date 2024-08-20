@@ -1,4 +1,5 @@
 package com.example.s_crafter.repository;
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -8,19 +9,26 @@ import com.example.s_crafter.model.StoryEntity;
 
 import java.util.List;
 
+import androidx.room.Dao;
+import androidx.room.Insert;
+import androidx.room.Query;
+import androidx.room.Update;
+
+import java.util.List;
+
 @Dao
 public interface StoryDao {
     @Insert
-    void insert(StoryEntity imageEntity);
+    void insert(StoryEntity storyEntity);
 
     @Update
-    void update(StoryEntity imageEntity);
+    void update(StoryEntity storyEntity);
 
     @Query("DELETE FROM story_table WHERE id = :id")
     void deleteById(int id);
 
     @Query("SELECT * FROM story_table ORDER BY id DESC")
-    List<StoryEntity> getAllImages();
+    LiveData<List<StoryEntity>> getAllImages();
 
     @Query("SELECT * FROM story_table WHERE isFavorite = 1 LIMIT 1")
     StoryEntity getFavoriteImage();

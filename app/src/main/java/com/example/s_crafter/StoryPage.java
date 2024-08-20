@@ -1,6 +1,9 @@
 package com.example.s_crafter;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -16,7 +19,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.s_crafter.model.StoryEntity;
+
 public class StoryPage extends AppCompatActivity {
+    private Context context;
+    String storyPageImagePath;
+    String storyPageText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +36,20 @@ public class StoryPage extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        ImageView imageView = findViewById(R.id.imageStoryPage);
-        imageView.setImageResource(getIntent().getIntExtra("storyPageImage",0));
+
+        ImageView imageView = findViewById(R.id.imageStoryPageRead);
+
+        storyPageImagePath = getIntent().getStringExtra("storyPageImage");
+        if (storyPageImagePath != null) {
+            Bitmap bitmap = BitmapFactory.decodeFile(storyPageImagePath);
+            imageView.setImageBitmap(bitmap);
+        } else {
+             imageView.setImageResource(R.drawable.my_image);
+        }
+
         TextView textView = findViewById(R.id.textStoryPage);
-        textView.setText(getIntent().getStringExtra("storyPageText"));
+        storyPageText = getIntent().getStringExtra("storyPageText");
+        textView.setText(storyPageText);
 
         Button backButton = findViewById(R.id.buttonRevert);
         buttonRevert(backButton);
@@ -40,12 +58,13 @@ public class StoryPage extends AppCompatActivity {
         toFlipCardActivityByButton(buttonFlip);
     }
 
+
     private void buttonRevert(Button backButton) {
         backButton.setBackgroundColor(Color.parseColor("#ADD8E6"));
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish(); // Повертає на попереднє активіті
+                finish();
             }
         });
     }
@@ -55,8 +74,10 @@ public class StoryPage extends AppCompatActivity {
         buttonFlip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(StoryPage.this, FlipCard.class);
-                startActivity(intent);
+                Intent intentFlipCard = new Intent(StoryPage.this, FlipCard.class);
+                intentFlipCard.putExtra("storyPageImagePathFlipCard", storyPageImagePath);
+                intentFlipCard.putExtra("storyPageTextFlipCard", storyPageText);
+                startActivity(intentFlipCard);
             }
         });
     }

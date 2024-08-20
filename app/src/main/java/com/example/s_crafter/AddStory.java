@@ -1,7 +1,9 @@
 package com.example.s_crafter;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -19,8 +21,10 @@ import com.example.s_crafter.model.StoryEntity;
 import com.example.s_crafter.repository.AppDatabase;
 import com.example.s_crafter.repository.StoryDao;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Objects;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -29,6 +33,7 @@ public class AddStory extends AppCompatActivity {
     private ImageView imageView;
     private Uri imageUri;
     private TextView editText;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,28 +64,79 @@ public class AddStory extends AppCompatActivity {
 
     private void saveStory() {
         AppDatabase db = AppDatabase.getInstance(AddStory.this);
-        StoryDao imageDao = db.imageDao();
-        String editTextString = editText.getText().toString();
-        String imageUriPath = "null";
-        try {
+        StoryDao storyDao = db.storyDao();
+        String editTextString = editText.getText().toString().trim();
+        String imageUriPath = null;
+
+        if (imageUri != null) {
             imageUriPath = imageUri.getPath();
-        } catch (NullPointerException e) {
-            imageUriPath = "null";
         }
 
-        if (!Objects.equals(imageUriPath, "null") && !editTextString.isEmpty()) {
+        if (imageUriPath != null && !editTextString.isEmpty()) {
             Executor executor = Executors.newSingleThreadExecutor();
             executor.execute(() -> {
-                StoryEntity image = new StoryEntity(imageUri.getPath(), editText.toString(), false, 0);
-                imageDao.insert(image);
-                notification("Подія збережена успішно");
-                Intent intent = new Intent(AddStory.this, MainActivity.class);
-                startActivity(intent);
+                try {
+                    Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
+
+                    String imagePath = saveImageToFile(bitmap, this);
+
+                    if (imagePath != null) {
+                        StoryEntity story = new StoryEntity(imagePath, editTextString, false, 0);
+                        storyDao.insert(story);
+
+                        runOnUiThread(() -> {
+                            notification("Подія збережена успішно");
+                            Intent intent = new Intent(AddStory.this, MainActivity.class);
+                            startActivity(intent);
+                        });
+                    } else {
+                        runOnUiThread(() -> notification("Помилка збереження зображення"));
+                    }
+                } catch (Exception e) {
+                    runOnUiThread(() -> notification("Помилка збереження події"));
+                    e.printStackTrace();
+                }
             });
         } else {
-            notification("Виберіть фото і добавте опис");
+            notification("Виберіть фото і додайте опис");
         }
     }
+
+    private String saveImageToFile(Bitmap bitmap, Context context) {
+        File directory = context.getDir("images", Context.MODE_PRIVATE);
+        String fileName = "image_" + System.currentTimeMillis() + ".png";
+        File file = new File(directory, fileName);
+
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return file.getAbsolutePath();
+    }
+
+
+    private Bitmap resizeBitmap(Bitmap originalBitmap, int maxWidth, int maxHeight) {
+        int width = originalBitmap.getWidth();
+        int height = originalBitmap.getHeight();
+        float aspectRatio = (float) width / (float) height;
+
+        if (width > maxWidth) {
+            width = maxWidth;
+            height = (int) (width / aspectRatio);
+        }
+
+        if (height > maxHeight) {
+            height = maxHeight;
+            width = (int) (height * aspectRatio);
+        }
+
+        return Bitmap.createScaledBitmap(originalBitmap, width, height, false);
+    }
+
+
 
     private void notification(String notification) {
         runOnUiThread(() -> {

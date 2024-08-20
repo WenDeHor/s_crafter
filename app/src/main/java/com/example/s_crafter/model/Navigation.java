@@ -1,5 +1,7 @@
 package com.example.s_crafter.model;
 
+import androidx.annotation.NonNull;
+
 public class Navigation {
     int id;
     String title;
@@ -23,5 +25,14 @@ public class Navigation {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Navigation{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                '}';
     }
 }

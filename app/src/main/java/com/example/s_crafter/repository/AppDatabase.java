@@ -12,7 +12,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instance;
 
-    public abstract StoryDao imageDao();
+    public abstract StoryDao storyDao();
 
     public static synchronized AppDatabase getInstance(Context context) {
         if (instance == null) {

@@ -1,18 +1,23 @@
 package com.example.s_crafter.model;
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+import java.util.Arrays;
+
 @Entity(tableName = "story_table")
 public class StoryEntity {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
 
-    private String imagePath;  // Шлях до зображення
-    private String description;  // Опис або текст
-    private boolean isFavorite;  // Позначення улюбленої картинки
-    private int clickCount;  // Лічильник кліків
+    private String imagePath;  // Замість байтового масиву зберігаємо шлях до зображення
+    private String description;
+    private boolean isFavorite;
+    private int clickCount;
 
-    // Конструктор
     public StoryEntity(String imagePath, String description, boolean isFavorite, int clickCount) {
         this.imagePath = imagePath;
         this.description = description;
@@ -29,16 +34,17 @@ public class StoryEntity {
         this.id = id;
     }
 
+
+    public String getDescription() {
+        return description;
+    }
+
     public String getImagePath() {
         return imagePath;
     }
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public void setDescription(String description) {
@@ -60,6 +66,17 @@ public class StoryEntity {
     public void setClickCount(int clickCount) {
         this.clickCount = clickCount;
     }
-}
 
+    @NonNull
+    @Override
+    public String toString() {
+        return "StoryEntity{" +
+                "id=" + id +
+                ", image=" + imagePath +
+                ", description='" + description + '\'' +
+                ", isFavorite=" + isFavorite +
+                ", clickCount=" + clickCount +
+                '}';
+    }
+}
 

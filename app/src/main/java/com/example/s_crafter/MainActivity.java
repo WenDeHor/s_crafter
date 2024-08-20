@@ -1,100 +1,122 @@
 package com.example.s_crafter;
 
-import android.content.Context;
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.s_crafter.adapter.CenterSmoothScroller;
 import com.example.s_crafter.adapter.GalleryAdapter;
 import com.example.s_crafter.adapter.NavigatorAdapter;
-import com.example.s_crafter.model.Gallery;
 import com.example.s_crafter.model.Navigation;
+import com.example.s_crafter.model.StoryEntity;
+import com.example.s_crafter.repository.AppDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
-    RecyclerView navigatorRecycler, galleryRecycler;
-    NavigatorAdapter navigatorAdapter;
-    GalleryAdapter galleryAdapter;
-    List<Navigation> navigationList = new ArrayList<>();
-    List<Gallery> galleryList = new ArrayList<>();
-
-
-    String textTest = "Інколи в житі кожної людини відбуваються події про які вона могла лише мріяти. Життєва стіна була непробивною і тому кожен усвідомивши це продовжував жити сірими буднями з дня в день займаючись тими самими справами, не змінюючи свого звичного способу життя. Кожна подія була передбачуваною і навіть подарунок, що містив в собі фактор несподіваності був очікуваним і не містив в собі нічого надзвичайного";
+    private RecyclerView navigatorRecycler, galleryRecycler;
+    private NavigatorAdapter navigatorAdapter;
+    private GalleryAdapter galleryAdapter;
+    private List<StoryEntity> storyList = new ArrayList<>();
+    private List<Navigation> navigationList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        EdgeToEdge.enable(this);  // Якщо EdgeToEdge є частиною вашого проєкту
         setContentView(R.layout.activity_main);
 
         galleryRecycler = findViewById(R.id.galleryRecycler);
         navigatorRecycler = findViewById(R.id.navigatorRecycler);
         Button buttonAdd = findViewById(R.id.buttonAdd);
         addStoryByButton(buttonAdd);
+        initializeAdapters();
+        setupViewModel();
+    }
 
-        testDb(galleryRecycler, navigatorRecycler);
+    private void requestStoragePermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
 
-        NavigatorAdapter searcher = new NavigatorAdapter(this, navigationList, new NavigatorAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                smoothScrollToCenter(galleryRecycler, position);
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    1);
+        } else {
+            initializeAdapters();
+            setupViewModel();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                setupViewModel();
+                initializeAdapters();
+            } else {
+                Toast.makeText(this, "Permission denied to read external storage", Toast.LENGTH_SHORT).show();
             }
-        });
-        navigatorRecycler.setAdapter(searcher);
+        }
+    }
 
+    private void initializeAdapters() {
+        navigatorAdapter = new NavigatorAdapter(this, navigationList, position -> smoothScrollToCenter(galleryRecycler, position));
+        galleryAdapter = new GalleryAdapter(this, storyList);
+
+        RecyclerView.LayoutManager layoutManagerGalleryRecycler = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        galleryRecycler.setLayoutManager(layoutManagerGalleryRecycler);
+        RecyclerView.LayoutManager layoutManagerNavigatorRecycler = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
+        navigatorRecycler.setLayoutManager(layoutManagerNavigatorRecycler);
+
+        navigatorRecycler.setAdapter(navigatorAdapter);
+        galleryRecycler.setAdapter(galleryAdapter);
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void setupViewModel() {
+        AppDatabase db = AppDatabase.getInstance(this);
+
+        db.storyDao().getAllImages().observe(this, storyEntities -> {
+            storyList.clear();
+            navigationList.clear();
+
+            storyList.addAll(storyEntities);
+            navigationList.addAll(storyEntities.stream()
+                    .map(e -> new Navigation(e.getId(), String.valueOf(e.getId())))
+                    .collect(Collectors.toList()));
+
+            galleryAdapter.notifyDataSetChanged();
+            navigatorAdapter.notifyDataSetChanged();
+        });
     }
 
     private void addStoryByButton(Button buttonAdd) {
         buttonAdd.setBackgroundColor(Color.parseColor("#ADD8E6"));
-        buttonAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-                Intent intent = new Intent(MainActivity.this, AddStory.class);
-                startActivity(intent);
-            }
+        buttonAdd.setOnClickListener(v -> {
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            Intent intent = new Intent(MainActivity.this, AddStory.class);
+            startActivity(intent);
         });
-    }
-
-    private void testDb(RecyclerView galleryRecycler, RecyclerView navigatorRecycler) {
-        for (int i = 0; i < 20; i++) {
-            navigationList.add(new Navigation(i + 1, String.valueOf(i + 1)));
-        }
-        setNavigatorRecycler(navigationList, navigatorRecycler);
-
-        for (int i = 0; i < 20; i++) {
-            galleryList.add(new Gallery(i + 1, "my_image", "title", i + 1 + "__" + textTest));
-        }
-        setGalleryRecycler(galleryList, galleryRecycler);
-    }
-
-    private void setGalleryRecycler(List<Gallery> galleryList, RecyclerView galleryRecycler) {
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-        galleryRecycler.setLayoutManager(layoutManager);
-
-        galleryAdapter = new GalleryAdapter(this, galleryList);
-        galleryRecycler.setAdapter(galleryAdapter);
-    }
-
-    private void setNavigatorRecycler(List<Navigation> navigationList, RecyclerView navigatorRecycler) {
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
-        navigatorRecycler.setLayoutManager(layoutManager);
-
-        navigatorAdapter = new NavigatorAdapter(this, navigationList);
-        navigatorRecycler.setAdapter(navigatorAdapter);
     }
 
     private void smoothScrollToCenter(RecyclerView recyclerView, int position) {
@@ -103,3 +125,5 @@ public class MainActivity extends AppCompatActivity {
         Objects.requireNonNull(recyclerView.getLayoutManager()).startSmoothScroll(smoothScroller);
     }
 }
+
+

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,19 +16,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.s_crafter.FlipCard;
 import com.example.s_crafter.R;
 import com.example.s_crafter.StoryPage;
 import com.example.s_crafter.model.Gallery;
+import com.example.s_crafter.model.StoryEntity;
 
 import java.util.List;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryViewHolder> {
     Context context;
-    List<Gallery> galleries;
+    List<StoryEntity> stories;
 
-    public GalleryAdapter(Context context, List<Gallery> galleries) {
+    public GalleryAdapter(Context context, List<StoryEntity> stories) {
         this.context = context;
-        this.galleries = galleries;
+        this.stories = stories;
     }
 
     @NonNull
@@ -38,20 +42,26 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
 
     @Override
     public void onBindViewHolder(@NonNull GalleryViewHolder holder, int position) {
-        int imageId = context.getResources().getIdentifier(galleries.get(position).getImg(), "drawable", context.getPackageName());
-        holder.imageView.setImageResource(imageId);
-        String text = galleries.get(position).getText();
+        StoryEntity story = stories.get(position);
+
+        Bitmap bitmap = BitmapFactory.decodeFile(story.getImagePath());
+        holder.imageView.setImageBitmap(bitmap);
+
+        String text = story.getDescription();
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, StoryPage.class);
-                intent.putExtra("storyPageImage", imageId);
-                intent.putExtra("storyPageText", text);
-                context.startActivity(intent, imageTransitionMaker(holder).toBundle());
+                Intent intentStoryPage = new Intent(context, StoryPage.class);
+                intentStoryPage.putExtra("storyPageImage", story.getImagePath());
+                intentStoryPage.putExtra("storyPageText", text);
+
+
+                context.startActivity(intentStoryPage, imageTransitionMaker(holder).toBundle());
             }
         });
     }
+
 
     private ActivityOptions imageTransitionMaker(@NonNull GalleryViewHolder holder) {
         return ActivityOptions.makeSceneTransitionAnimation(
@@ -60,10 +70,9 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
         );
     }
 
-
     @Override
     public int getItemCount() {
-        return galleries.size();
+        return stories.size();
     }
 
     public static final class GalleryViewHolder extends RecyclerView.ViewHolder {
@@ -75,3 +84,4 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
         }
     }
 }
+

@@ -1,5 +1,7 @@
 package com.example.s_crafter.model;
 
+import androidx.annotation.NonNull;
+
 public class Gallery {
     int id;
     String img, title, text;
@@ -41,5 +43,16 @@ public class Gallery {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Gallery{" +
+                "id=" + id +
+                ", img='" + img + '\'' +
+                ", title='" + title + '\'' +
+                ", text='" + text + '\'' +
+                '}';
     }
 }

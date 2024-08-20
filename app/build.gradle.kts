@@ -40,6 +40,8 @@ dependencies {
     implementation(libs.recyclerview)
     implementation(libs.constraintlayout)
     implementation(libs.roomRuntime)
+    implementation(libs.lifecycleViewmodelKtx)
+    implementation(libs.lifecycleLivedataKtx)
     annotationProcessor(libs.roomCompiler)
 //    implementation(libs.cardview)
     testImplementation(libs.junit)
