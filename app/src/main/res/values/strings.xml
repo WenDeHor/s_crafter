@@ -11,7 +11,7 @@
     <string name="to_flip">To Flip</string>
     <string name="hint_text">Введіть текст тут</string>
     <string name="revert">Revert</string>
-    <string name="add">+</string>
+    <string name="add">add</string>
     <string name="appColor">#F1F6F1</string>
     <string name="cardBgTextColor">#B0CCE2</string>
     <string name="cardTextColor">#2F1D04</string>

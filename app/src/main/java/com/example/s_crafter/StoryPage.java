@@ -49,16 +49,6 @@ public class StoryPage extends AppCompatActivity {
         toFlipCardActivityByButton(buttonFlip);
     }
 
-
-    private void buttonRevert(Button backButton) {
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-    }
-
     private void toFlipCardActivityByButton(Button buttonFlip) {
         buttonFlip.setOnClickListener(new View.OnClickListener() {
             @Override
