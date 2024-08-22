@@ -56,6 +56,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/bg_app_color"
             android:gravity="center"
             android:orientation="vertical"
             android:padding="16dp">
@@ -75,7 +76,11 @@
                 android:id="@+id/buttonSelectImage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/add_image" />
+                android:padding="16dp"
+                android:stateListAnimator="@android:anim/bounce_interpolator"
+                android:text="@string/add_image"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/addingText"
@@ -100,8 +105,11 @@
                 android:id="@+id/buttonSaveStory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:stateListAnimator="@android:anim/bounce_interpolator"
                 android:text="@string/save"
-                android:theme="@style/ButtonStyle"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

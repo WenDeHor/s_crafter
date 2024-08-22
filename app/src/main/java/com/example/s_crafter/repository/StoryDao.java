@@ -1,4 +1,5 @@
 package com.example.s_crafter.repository;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -6,13 +7,6 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.example.s_crafter.model.StoryEntity;
-
-import java.util.List;
-
-import androidx.room.Dao;
-import androidx.room.Insert;
-import androidx.room.Query;
-import androidx.room.Update;
 
 import java.util.List;
 

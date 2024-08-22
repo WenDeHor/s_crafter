@@ -1,6 +1,5 @@
 package com.example.s_crafter;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -18,13 +17,9 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 
 public class FlipCard extends AppCompatActivity {
-
-    private Context context;
     private FrameLayout cardContainer;
-    private CardView cardView;
     private View cardFront;
     private View cardBack;
     private boolean isFrontVisible = true;
@@ -35,22 +30,15 @@ public class FlipCard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_flip_card);
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-//            return insets;
-//        });
         View contBg = findViewById(R.id.bg_flip_card);
-        contBg.setBackgroundColor(Color.parseColor(getString(R.string.appColor)));
+        contBg.setBackgroundColor(getResources().getColor(R.color.bg_app_color));
         cardContainer = findViewById(R.id.card_container);
-
         cardFront = getLayoutInflater().inflate(R.layout.card_front, null);
         cardBack = getLayoutInflater().inflate(R.layout.card_back, null);
-        cardBack.setBackgroundColor(Color.parseColor(getString(R.string.cardBgTextColor)));
-
+        cardBack.setBackgroundColor(getResources().getColor(R.color.bg_card_color));
         ImageView imageView = cardFront.findViewById(R.id.image_front);
+
         String storyPageImagePath = getIntent().getStringExtra("storyPageImagePathFlipCard");
-        System.out.println(storyPageImagePath+"+++++++++++++++Path");
         if (storyPageImagePath != null) {
             Bitmap bitmap = BitmapFactory.decodeFile(storyPageImagePath);
             imageView.setImageBitmap(bitmap);
@@ -59,11 +47,8 @@ public class FlipCard extends AppCompatActivity {
         }
         String storyPageText = getIntent().getStringExtra("storyPageTextFlipCard");
         setTextOnCardBack(storyPageText);
-
         adjustCardSize();
-
         cardContainer.addView(cardFront);
-
         cardContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,7 +59,7 @@ public class FlipCard extends AppCompatActivity {
         });
     }
 
-    private void setTextOnCardBack(String text){
+    private void setTextOnCardBack(String text) {
         TextView textView = cardBack.findViewById(R.id.text_back);
         textView.setTextColor(Color.parseColor(getString(R.string.cardTextColor)));
         textView.setText(text);
@@ -94,10 +79,8 @@ public class FlipCard extends AppCompatActivity {
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
         int width = displayMetrics.widthPixels;
         int height = displayMetrics.heightPixels;
-
         int cardWidth = (int) (width * 0.75);
         int cardHeight = (int) (height * 0.75);
-
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(cardWidth, cardHeight);
         params.gravity = android.view.Gravity.CENTER;
         cardContainer.setLayoutParams(params);
@@ -108,7 +91,6 @@ public class FlipCard extends AppCompatActivity {
         final ViewPropertyAnimator animator = cardContainer.animate();
         animator.setDuration(200);
         animator.setInterpolator(new DecelerateInterpolator());
-
         if (isFrontVisible) {
             animator.rotationY(90).withEndAction(new Runnable() {
                 @Override

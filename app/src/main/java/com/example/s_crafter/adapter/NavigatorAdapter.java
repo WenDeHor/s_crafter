@@ -17,14 +17,9 @@ import java.util.List;
 
 public class NavigatorAdapter extends RecyclerView.Adapter<NavigatorAdapter.NavigatorViewHolder> {
 
-    Context context;
-    List<Navigation> navigations;
-    private OnItemClickListener onItemClickListener;
-
-    public NavigatorAdapter(Context context, List<Navigation> navigations) {
-        this.context = context;
-        this.navigations = navigations;
-    }
+    private final Context context;
+    private final List<Navigation> navigations;
+    private final OnItemClickListener onItemClickListener;
 
     public NavigatorAdapter(Context context, List<Navigation> navigations, OnItemClickListener onItemClickListener) {
         this.context = context;

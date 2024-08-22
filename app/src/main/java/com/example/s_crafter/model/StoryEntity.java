@@ -1,19 +1,15 @@
 package com.example.s_crafter.model;
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
-import java.util.Arrays;
 
 @Entity(tableName = "story_table")
 public class StoryEntity {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
-
-    private String imagePath;  // Замість байтового масиву зберігаємо шлях до зображення
+    private String imagePath;
     private String description;
     private boolean isFavorite;
     private int clickCount;
@@ -25,7 +21,6 @@ public class StoryEntity {
         this.clickCount = clickCount;
     }
 
-    // Getters and Setters (можна автоматично згенерувати)
     public int getId() {
         return id;
     }
@@ -33,7 +28,6 @@ public class StoryEntity {
     public void setId(int id) {
         this.id = id;
     }
-
 
     public String getDescription() {
         return description;

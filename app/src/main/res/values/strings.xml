@@ -8,6 +8,7 @@
     <string name="add_image">Add Image</string>
     <string name="add_text">Add Text</string>
     <string name="save">Save</string>
+    <string name="to_flip">To Flip</string>
     <string name="hint_text">Введіть текст тут</string>
     <string name="revert">Revert</string>
     <string name="add">+</string>

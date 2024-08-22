@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.InputFilter;
+import android.view.View;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,7 +23,6 @@ import com.example.s_crafter.model.StoryEntity;
 import com.example.s_crafter.repository.AppDatabase;
 import com.example.s_crafter.repository.StoryDao;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -33,33 +34,28 @@ public class AddStory extends AppCompatActivity {
     private ImageView imageView;
     private Uri imageUri;
     private TextView editText;
-    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_add_story);
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-//            return insets;
-//        });
-//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         editText = findViewById(R.id.addingText);
         int maxLength = 250;
         editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxLength)});
         Button buttonSelectImage = findViewById(R.id.buttonSelectImage);
+        buttonSelectImage.setBackgroundColor(getResources().getColor(R.color.button_color));
         imageView = findViewById(R.id.imageStoryPage);
 
         reloadSelectedImage(buttonSelectImage);
 
         Button buttonSave = findViewById(R.id.buttonSaveStory);
+        buttonSave.setBackgroundColor(getResources().getColor(R.color.button_color));
         buttonSave.setOnClickListener(v -> saveStory());
     }
 
     private void reloadSelectedImage(Button button) {
-        button.setOnClickListener(v -> openGallery());
+        button.setOnClickListener(e->openGallery());
     }
 
     private void saveStory() {
@@ -77,13 +73,10 @@ public class AddStory extends AppCompatActivity {
             executor.execute(() -> {
                 try {
                     Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
-
                     String imagePath = saveImageToFile(bitmap, this);
-
                     if (imagePath != null) {
                         StoryEntity story = new StoryEntity(imagePath, editTextString, false, 0);
                         storyDao.insert(story);
-
                         runOnUiThread(() -> {
                             notification("Подія збережена успішно");
                             Intent intent = new Intent(AddStory.this, MainActivity.class);
@@ -106,37 +99,14 @@ public class AddStory extends AppCompatActivity {
         File directory = context.getDir("images", Context.MODE_PRIVATE);
         String fileName = "image_" + System.currentTimeMillis() + ".png";
         File file = new File(directory, fileName);
-
         try (FileOutputStream fos = new FileOutputStream(file)) {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
-
         return file.getAbsolutePath();
     }
-
-
-    private Bitmap resizeBitmap(Bitmap originalBitmap, int maxWidth, int maxHeight) {
-        int width = originalBitmap.getWidth();
-        int height = originalBitmap.getHeight();
-        float aspectRatio = (float) width / (float) height;
-
-        if (width > maxWidth) {
-            width = maxWidth;
-            height = (int) (width / aspectRatio);
-        }
-
-        if (height > maxHeight) {
-            height = maxHeight;
-            width = (int) (height * aspectRatio);
-        }
-
-        return Bitmap.createScaledBitmap(originalBitmap, width, height, false);
-    }
-
-
 
     private void notification(String notification) {
         runOnUiThread(() -> {
@@ -158,7 +128,6 @@ public class AddStory extends AppCompatActivity {
                 && data != null
                 && data.getData() != null) {
             imageUri = data.getData();
-
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
                 imageView.setImageBitmap(bitmap);

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:cardBackgroundColor="@color/fone"
+    android:background="@color/bg_app_color"
     android:id="@+id/bg_flip_card">
 
     <TextView
@@ -41,6 +41,7 @@
 
     <FrameLayout
         android:id="@+id/card_container"
+        android:background="@color/bg_app_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 

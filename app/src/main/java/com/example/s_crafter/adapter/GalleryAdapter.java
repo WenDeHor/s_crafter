@@ -25,8 +25,8 @@ import com.example.s_crafter.model.StoryEntity;
 import java.util.List;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryViewHolder> {
-    Context context;
-    List<StoryEntity> stories;
+    private final Context context;
+    private final List<StoryEntity> stories;
 
     public GalleryAdapter(Context context, List<StoryEntity> stories) {
         this.context = context;
@@ -43,20 +43,15 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.GalleryV
     @Override
     public void onBindViewHolder(@NonNull GalleryViewHolder holder, int position) {
         StoryEntity story = stories.get(position);
-
         Bitmap bitmap = BitmapFactory.decodeFile(story.getImagePath());
         holder.imageView.setImageBitmap(bitmap);
-
         String text = story.getDescription();
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intentStoryPage = new Intent(context, StoryPage.class);
                 intentStoryPage.putExtra("storyPageImage", story.getImagePath());
                 intentStoryPage.putExtra("storyPageText", text);
-
-
                 context.startActivity(intentStoryPage, imageTransitionMaker(holder).toBundle());
             }
         });

@@ -5,7 +5,7 @@
     android:id="@+id/storyPage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/fone"
+    android:background="@color/bg_app_color"
     tools:context=".StoryPage">
 
     <TextView
@@ -45,6 +45,7 @@
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="wrap_content"
+        android:background="@color/bg_app_color"
         android:layout_height="0dp"
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -57,8 +58,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+
             android:orientation="vertical"
-            android:padding="16dp">
+           >
 
             <ImageView
                 android:id="@+id/imageStoryPageRead"
@@ -80,6 +82,8 @@
                 android:text="@string/some_text"
                 android:textColor="#1B0101"
                 android:textSize="16sp"
+                android:paddingEnd="25dp"
+                android:paddingStart="25dp"
                 app:layout_constraintBottom_toTopOf="@+id/button2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -93,26 +97,18 @@
                 android:padding="16dp">
 
                 <Button
-                    android:id="@+id/buttonRevert"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/buttonToFlip"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/story_page_button"
-                    android:theme="@style/ButtonStyle"
+                    android:padding="16dp"
+                    android:stateListAnimator="@android:anim/bounce_interpolator"
+                    android:text="@string/to_flip"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
-                <Button
-                    android:id="@+id/buttonToFlip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="To Flip" />
-
-                <Button
-                    android:id="@+id/buttonToEdit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Edit" />
 
             </LinearLayout>
 
