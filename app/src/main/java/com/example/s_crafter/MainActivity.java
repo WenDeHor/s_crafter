@@ -3,8 +3,10 @@ package com.example.s_crafter;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
@@ -22,6 +24,9 @@ import com.example.s_crafter.model.Navigation;
 import com.example.s_crafter.model.StoryEntity;
 import com.example.s_crafter.repository.AppDatabase;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -84,6 +89,14 @@ public class MainActivity extends AppCompatActivity {
             navigationList.addAll(storyEntities.stream()
                     .map(e -> new Navigation(e.getId(), String.valueOf(e.getId())))
                     .collect(Collectors.toList()));
+            if (storyList.isEmpty()) {
+                savePathDefaultImageToStorage();
+                File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                File imageFile = new File(storageDir, "mine_photo_list.jpg");
+
+                storyList.add(new StoryEntity(imageFile.getPath(), "add your story", false, 0));
+                navigationList.add(new Navigation(1, "1"));
+            }
             galleryAdapter.notifyDataSetChanged();
             navigatorAdapter.notifyDataSetChanged();
         });
@@ -102,6 +115,26 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.SmoothScroller smoothScroller = new CenterSmoothScroller(this);
         smoothScroller.setTargetPosition(position);
         Objects.requireNonNull(recyclerView.getLayoutManager()).startSmoothScroll(smoothScroller);
+    }
+
+    private void savePathDefaultImageToStorage() {
+        File storageDir;
+        try {
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.mine_photo_list);
+            storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            if (storageDir != null && !storageDir.exists()) {
+                storageDir.mkdirs();
+            }
+            File imageFile = new File(storageDir, "mine_photo_list.jpg");
+            if (!imageFile.exists()) {
+                imageFile.createNewFile();
+            }
+            FileOutputStream fos = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 

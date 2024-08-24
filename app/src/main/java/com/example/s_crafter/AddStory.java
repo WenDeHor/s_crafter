@@ -8,8 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.InputFilter;
-import android.view.View;
-import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -55,7 +53,7 @@ public class AddStory extends AppCompatActivity {
     }
 
     private void reloadSelectedImage(Button button) {
-        button.setOnClickListener(e->openGallery());
+        button.setOnClickListener(e -> openGallery());
     }
 
     private void saveStory() {
@@ -78,20 +76,20 @@ public class AddStory extends AppCompatActivity {
                         StoryEntity story = new StoryEntity(imagePath, editTextString, false, 0);
                         storyDao.insert(story);
                         runOnUiThread(() -> {
-                            notification("Подія збережена успішно");
+                            notification("Event saved successfully");
                             Intent intent = new Intent(AddStory.this, MainActivity.class);
                             startActivity(intent);
                         });
                     } else {
-                        runOnUiThread(() -> notification("Помилка збереження зображення"));
+                        runOnUiThread(() -> notification("Error saving image"));
                     }
                 } catch (Exception e) {
-                    runOnUiThread(() -> notification("Помилка збереження події"));
+                    runOnUiThread(() -> notification("Error saving event"));
                     e.printStackTrace();
                 }
             });
         } else {
-            notification("Виберіть фото і додайте опис");
+            notification("Choose a photo and add a description");
         }
     }
 
