@@ -3,15 +3,15 @@ plugins {
 }
 
 android {
-    namespace = "com.example.s_crafter"
+    namespace = "com.wendehor.s_crafter"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.s_crafter"
+        applicationId = "com.wendehor.s_crafter"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 3
+        versionName = "1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -43,10 +43,7 @@ dependencies {
     implementation(libs.lifecycleViewmodelKtx)
     implementation(libs.lifecycleLivedataKtx)
     annotationProcessor(libs.roomCompiler)
-//    implementation(libs.cardview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-//    implementation 'androidx.room:room-runtime:2.5.0'
-//    annotationProcessor 'androidx.room:room-compiler:2.5.0'
 }
