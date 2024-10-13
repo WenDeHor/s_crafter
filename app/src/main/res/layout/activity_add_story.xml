@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_app_color"
-    tools:context=".StoryPage">
+
+    tools:context=".AddStory">
 
     <TextView
         android:id="@+id/textView"
@@ -43,7 +44,7 @@
         tools:ignore="RtlSymmetry" />
 
     <ScrollView
-        android:id="@+id/scrollView"
+        android:id="@+id/scrollViewAddStory"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:fillViewport="true"
@@ -87,16 +88,19 @@
                 android:id="@+id/addingText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:minHeight="48dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
-                android:gravity="start|top"
                 android:fontFamily="@font/montserrat_bold"
+                android:gravity="start|top"
                 android:hint="@string/hint_text"
                 android:importantForAutofill="no"
                 android:inputType="textMultiLine"
                 android:maxLength="250"
-                android:textColor="@color/black"
-                android:textColorHint="@android:color/darker_gray"
+                android:padding="10dp"
+                android:scrollbars="none"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/hint_text_color"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toTopOf="@+id/button2"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -107,26 +111,16 @@
                 android:id="@+id/buttonSaveStory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:fontFamily="@font/montserrat_bold"
                 android:padding="16dp"
                 android:stateListAnimator="@android:anim/bounce_interpolator"
                 android:text="@string/save"
-                android:fontFamily="@font/montserrat_bold"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/button_text_color"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
-
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="600dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" />
-            </ScrollView>
-
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

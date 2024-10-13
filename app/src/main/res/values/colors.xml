@@ -10,10 +10,15 @@
     <color name="button_focused_color">#00FF00</color>
     <color name="button_default_color">#0000FF</color>
 
+    <color name="hint_text_color">#4B4B57</color>
+    <color name="text_color">#0D0D16</color>
+
     <color name="button_color">#65BAFB</color>
-    <color name="bg_app_color">#D9ECFB</color>
+    <color name="button_text_color">#FFFFFF</color>
+    <color name="bg_app_color">#F0EDE7</color>
     <color name="bg_navigation_color">#C6D7E4</color>
     <color name="bg_navigation_color_on">#89C2EF</color>
     <color name="bg_card_color">#AEDCFF</color>
+
 
 </resources>
